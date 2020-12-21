@@ -135,9 +135,12 @@ namespace Calculator
             {
                 lastOperatorSign = getSign?.Invoke();
 
-                if (storedBinaryOperation != null)
+                if (storedBinaryOperation != null )
                 {
-                    resultNum = storedBinaryOperation.Invoke(resultNum, currentNum);
+                    if (!hasEqualed)
+                    {
+                        resultNum = storedBinaryOperation.Invoke(resultNum, currentNum);
+                    }
 
                     currentNum = 0;
                     currentNumString.Clear();
