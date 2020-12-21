@@ -6,9 +6,16 @@ namespace Calculator
 {
     public class CalcButtonClickHandler : MonoBehaviour
     {
+        ICommand commandInterface;
+
+        private void Start()
+        {
+            commandInterface = GetComponent<ICommand>();
+        }
+
         public void ButtonOnClick()
         {
-            Debug.Log("Button Clicked " + gameObject.name);
+            commandInterface.Command();
         }
     }
 }
