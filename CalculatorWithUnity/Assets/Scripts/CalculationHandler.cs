@@ -5,38 +5,25 @@ using UnityEngine;
 
 namespace Calculator
 {
-    public class CalculationHandler : MonoBehaviour
+    public abstract class CalculationHandler : MonoBehaviour, ICommandExecutioner
     {
-        ICalculationMode calculationMode;
-        bool isDisplayUpdateRequired = false;
+        static ICommandExecutioner executioner;
 
-        // Start is called before the first frame update
-        void Start()
+        protected virtual void Awake()
         {
-            calculationMode = GetComponent<ICalculationMode>();
+            executioner = this;
         }
 
-        private void Update()
+        public static ICommandExecutioner GetCommandExecutioner()
         {
-            if(isDisplayUpdateRequired)
-            {
-                // Do the display update
-            }
+            return executioner;
         }
 
-        public void CommandExecutioner(Action Execute)
-        {
-            Execute();
-        }
+        public abstract void CommandExecutioner(Func<string> execute);
 
-        public void CommandExecutioner(Action<double> Execute)
-        {
-            Execute(1);
-        }
+        public abstract void CommandExecutioner(Func<string> sign, Func<double, double> execute);
 
-        public void CommandExecutioner(Action<double, double> Execute)
-        {
-            Execute(1, 2);
-        }
+        public abstract void CommandExecutioner(Func<string> sign, Func<double, double, double> execute);
+
     }
 }
