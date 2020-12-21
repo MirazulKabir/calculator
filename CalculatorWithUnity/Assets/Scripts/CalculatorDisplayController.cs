@@ -7,20 +7,17 @@ namespace Calculator
 {
     public class CalculatorDisplayController : MonoBehaviour
     {
-        [SerializeField] Text inputText;
+        [SerializeField] Text displayText;
         [SerializeField] Text inputHistoryText;
-        [SerializeField] Text resultText;
 
-        // Start is called before the first frame update
-        void Start()
+        public void UpdateDisplay(string str)
         {
-            
+            displayText.text = str;
         }
 
-        // Update is called once per frame
-        void Update()
+        public void UpdateInputHistory(string str)
         {
-
+            inputHistoryText.text = str;
         }
     }
 }

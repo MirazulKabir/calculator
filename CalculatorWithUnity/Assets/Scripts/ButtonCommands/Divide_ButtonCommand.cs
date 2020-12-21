@@ -17,7 +17,7 @@ namespace Calculator
             if(y == 0)
             {
                 Debug.LogError("Cannot be divided by zero");
-                return 0;
+                return Mathf.Infinity;
             }
 
             return x / y;

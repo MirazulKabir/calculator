@@ -13,11 +13,16 @@ namespace Calculator
         double currentNum, resultNum;
 
         bool isDecimal = false;
+        bool hasEqualed = false;
 
         Func<double, double, double> storedBinaryOperation = null;
 
+        CalculatorDisplayController displayController;
+
         void Start()
         {
+            displayController = FindObjectOfType<CalculatorDisplayController>();
+
             currentNum = resultNum = 0;
             currentNumString.Clear();
             lastOperatorSign = lastDigit = null;
@@ -44,6 +49,19 @@ namespace Calculator
             else // for digits only
             {
                 lastDigit = getSign?.Invoke();
+                
+                if(hasEqualed)
+                {
+                    currentNum = 0;
+                    currentNumString.Clear();
+                    isDecimal = false;
+                    hasEqualed = false;
+
+                    if (lastOperatorSign != null)
+                    {
+                        UpdateInputHistoryString(resultNum.ToString() + " " + lastOperatorSign);
+                    }
+                }
 
                 if (lastDigit.Equals("0") && currentNumString.ToString().Equals(""))
                 {
@@ -65,8 +83,6 @@ namespace Calculator
                 }
             }
         }
-
-
 
         public override void CommandExecutioner(Func<string> getSign, Func<double, double> execute)
         {
@@ -141,6 +157,7 @@ namespace Calculator
             if (storedBinaryOperation != null)
             {
                 resultNum = storedBinaryOperation.Invoke(resultNum, currentNum);
+                hasEqualed = true;
 
                 UpdateDisplayString(resultNum.ToString());
                 UpdateInputHistoryString(resultNum.ToString() + " " + lastOperatorSign + " " + currentNum + " =");
@@ -153,7 +170,7 @@ namespace Calculator
             currentNumString.Clear();
             isDecimal = false;
 
-            UpdateDisplayString(currentNumString.ToString());
+            UpdateDisplayString("0");
             
             if(lastOperatorSign != null)
             {
@@ -180,13 +197,13 @@ namespace Calculator
         public void UpdateDisplayString(string str)
         {
             displayString = str;
-            Debug.Log("Display String: " + displayString);
+            displayController.UpdateDisplay(displayString);
         }
 
         public void UpdateInputHistoryString(string str)
         {
             inputHistoryString = str;
-            Debug.Log("Input History String: " + inputHistoryString);
+            displayController.UpdateInputHistory(inputHistoryString);
         }
 
         
